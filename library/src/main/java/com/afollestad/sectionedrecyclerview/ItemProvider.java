@@ -5,11 +5,11 @@ import android.support.annotation.RestrictTo;
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 interface ItemProvider {
 
-  int getSectionCount();
+    int getSectionCount();
 
-  int getItemCount(int sectionIndex);
+    int getItemCount(int sectionIndex);
 
-  boolean showHeadersForEmptySections();
+    boolean showHeaderWhenEmptyItems();
 
-  boolean showFooters();
+    boolean showFooters();
 }

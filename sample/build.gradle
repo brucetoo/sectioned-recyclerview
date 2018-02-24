@@ -20,10 +20,30 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        staging.initWith(buildTypes.release)
+        staging {
+            applicationIdSuffix ".staging"
+            versionNameSuffix "-starge"
+            debuggable false
+        }
     }
+
+//    productFlavors {
+//        UIFlavors {
+//            applicationId "com.ui.flavors"
+//            versionCode versions.publishVersion
+//        }
+//    }
 }
 
 dependencies {
     compile project(':library')
     compile 'com.android.support:appcompat-v7:' + versions.supportLib
 }
+
+//tasks.whenTaskAdded {
+//    theTask ->
+//        if(theTask.name.equals("packageRelease")){
+//        theTask.dependsOn "task名字！"
+//    }
+//}

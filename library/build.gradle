@@ -34,5 +34,3 @@ dependencies {
     testCompile 'com.google.truth:truth:' + versions.truth
     testCompile 'junit:junit:' + versions.junit
 }
-
-apply from: 'https://raw.githubusercontent.com/afollestad/aidanfollestad.com/master/android-lib-release.gradle'

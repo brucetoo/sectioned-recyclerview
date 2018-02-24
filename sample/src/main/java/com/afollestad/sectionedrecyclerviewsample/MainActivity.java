@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         new GridLayoutManager(this, getResources().getInteger(R.integer.grid_span));
     list.setLayoutManager(manager);
     adapter.setLayoutManager(manager);
-    adapter.shouldShowHeadersForEmptySections(hideEmpty);
+    adapter.showHeaderWhenEmptyItems(hideEmpty);
     adapter.shouldShowFooters(showFooters);
     list.setAdapter(adapter);
   }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.hide_empty_sections) {
       hideEmpty = !hideEmpty;
-      adapter.shouldShowHeadersForEmptySections(hideEmpty);
+      adapter.showHeaderWhenEmptyItems(hideEmpty);
       item.setChecked(!hideEmpty);
       return true;
     } else if (item.getItemId() == R.id.show_footers) {

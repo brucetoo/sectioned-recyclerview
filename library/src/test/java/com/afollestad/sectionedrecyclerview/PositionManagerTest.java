@@ -33,7 +33,7 @@ public class PositionManagerTest {
           }
 
           @Override
-          public boolean showHeadersForEmptySections() {
+          public boolean showHeaderWhenEmptyItems() {
             return true;
           }
 
@@ -79,13 +79,13 @@ public class PositionManagerTest {
     // 9
     // 10
     // 11
-    assertThat(positionManager.sectionId(-1)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(0)).isEqualTo(0);
-    assertThat(positionManager.sectionId(1)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(5)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(6)).isEqualTo(1);
-    assertThat(positionManager.sectionId(7)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(20)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(-1)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(0)).isEqualTo(0);
+    assertThat(positionManager.sectionIndex(1)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(5)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(6)).isEqualTo(1);
+    assertThat(positionManager.sectionIndex(7)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(20)).isEqualTo(-1);
   }
 
   @Test
@@ -106,26 +106,26 @@ public class PositionManagerTest {
     // Footer 13
     showFooters = true;
     invalidate();
-    assertThat(positionManager.sectionId(-1)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(0)).isEqualTo(0);
-    assertThat(positionManager.sectionId(1)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(6)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(7)).isEqualTo(1);
-    assertThat(positionManager.sectionId(8)).isEqualTo(-1);
-    assertThat(positionManager.sectionId(20)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(-1)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(0)).isEqualTo(0);
+    assertThat(positionManager.sectionIndex(1)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(6)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(7)).isEqualTo(1);
+    assertThat(positionManager.sectionIndex(8)).isEqualTo(-1);
+    assertThat(positionManager.sectionIndex(20)).isEqualTo(-1);
   }
 
   @Test
   public void test_footer_id() {
     showFooters = true;
     invalidate();
-    assertThat(positionManager.footerId(5)).isEqualTo(-1);
-    assertThat(positionManager.footerId(6)).isEqualTo(0);
-    assertThat(positionManager.footerId(7)).isEqualTo(-1);
-    assertThat(positionManager.footerId(12)).isEqualTo(-1);
-    assertThat(positionManager.footerId(13)).isEqualTo(1);
-    assertThat(positionManager.footerId(14)).isEqualTo(-1);
-    assertThat(positionManager.footerId(20)).isEqualTo(-1);
+    assertThat(positionManager.footerIndex(5)).isEqualTo(-1);
+    assertThat(positionManager.footerIndex(6)).isEqualTo(0);
+    assertThat(positionManager.footerIndex(7)).isEqualTo(-1);
+    assertThat(positionManager.footerIndex(12)).isEqualTo(-1);
+    assertThat(positionManager.footerIndex(13)).isEqualTo(1);
+    assertThat(positionManager.footerIndex(14)).isEqualTo(-1);
+    assertThat(positionManager.footerIndex(20)).isEqualTo(-1);
   }
 
   @Test
