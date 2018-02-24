@@ -19,7 +19,11 @@ class PositionManager implements SectionedViewHolder.PositionDelegate {
         this.itemProvider = itemProvider;
         for (int s = 0; s < itemProvider.getSectionCount(); s++) {
             if (itemProvider.collapseOnStart(s)) {
-                collapsedSectionMap.put(s, true);
+                if (itemProvider.getItemCount(s) == 0 && !itemProvider.showHeadersWhenEmptyItems()) {
+                    //DO NOTHING
+                } else {
+                    collapsedSectionMap.put(s, true);
+                }
             }
         }
     }

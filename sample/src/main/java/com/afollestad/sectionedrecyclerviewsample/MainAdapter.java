@@ -57,6 +57,7 @@ class MainAdapter extends SectionedRecyclerViewAdapter<MainAdapter.MainVH> {
         switch (sectionIndex) {
             case 0:
             case 2:
+            case 4:
                 return false;
             default:
                 return true;
