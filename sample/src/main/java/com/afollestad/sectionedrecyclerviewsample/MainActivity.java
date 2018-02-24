@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView list = (RecyclerView) findViewById(R.id.list);
     adapter = new MainAdapter();
     GridLayoutManager manager =
-        new GridLayoutManager(this, getResources().getInteger(R.integer.grid_span));
+        new GridLayoutManager(this, 4);
     list.setLayoutManager(manager);
     adapter.setLayoutManager(manager);
-    adapter.showHeaderWhenEmptyItems(hideEmpty);
-    adapter.shouldShowFooters(showFooters);
+    adapter.showHeadersWhenEmptyItems(hideEmpty);
+    adapter.showFooters(showFooters);
     list.setAdapter(adapter);
   }
 
@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.hide_empty_sections) {
       hideEmpty = !hideEmpty;
-      adapter.showHeaderWhenEmptyItems(hideEmpty);
+      adapter.showHeadersWhenEmptyItems(hideEmpty);
       item.setChecked(!hideEmpty);
       return true;
     } else if (item.getItemId() == R.id.show_footers) {
       showFooters = !showFooters;
-      adapter.shouldShowFooters(showFooters);
+      adapter.showFooters(showFooters);
       item.setChecked(showFooters);
       return true;
     }

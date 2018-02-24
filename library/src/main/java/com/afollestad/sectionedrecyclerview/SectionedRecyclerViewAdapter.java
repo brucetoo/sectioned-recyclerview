@@ -21,11 +21,11 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
     private static final String TAG = "SectionedRVAdapter";
     private PositionManager positionManager;
     private GridLayoutManager layoutManager;
-    private boolean showHeaderWhenEmptyItems;
+    private boolean showHeadersWhenEmptyItems;
     private boolean showFooters;
 
     public SectionedRecyclerViewAdapter() {
-        positionManager = new PositionManager();
+        positionManager = new PositionManager(this);
     }
 
     public void notifySectionChanged(@IntRange(from = 0, to = Integer.MAX_VALUE) int section) {
@@ -59,7 +59,7 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
 
     public void expandAllSections() {
         if (!positionManager.hasInvalidated()) {
-            positionManager.invalidate(this);
+            positionManager.invalidate();
         }
         positionManager.expandAllSections();
         notifyDataSetChanged();
@@ -67,7 +67,7 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
 
     public void collapseAllSections() {
         if (!positionManager.hasInvalidated()) {
-            positionManager.invalidate(this);
+            positionManager.invalidate();
         }
         positionManager.collapseAllSections();
         notifyDataSetChanged();
@@ -77,17 +77,6 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
         positionManager.toggleSectionExpanded(section);
         notifyDataSetChanged();
     }
-
-    public abstract int getSectionCount();
-
-    public abstract int getItemCount(int section);
-
-    public abstract void onBindHeaderViewHolder(VH holder, int section, boolean expanded);
-
-    public abstract void onBindFooterViewHolder(VH holder, int section);
-
-    public abstract void onBindViewHolder(
-            VH holder, int section, int relativePosition, int absolutePosition);
 
     public final boolean isHeader(int position) {
         return positionManager.isHeader(position);
@@ -113,8 +102,8 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
      * Toggle whether or not section headers are shown when a section has no items. Makes a call to
      * notifyDataSetChanged().
      */
-    public final void showHeaderWhenEmptyItems(boolean show) {
-        showHeaderWhenEmptyItems = show;
+    public final void showHeadersWhenEmptyItems(boolean showHeadersWhenEmptyItems) {
+        this.showHeadersWhenEmptyItems = showHeadersWhenEmptyItems;
         notifyDataSetChanged();
     }
 
@@ -122,8 +111,8 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
      * Toggle whether or not section footers are shown at the bottom of each section. Makes a call to
      * notifyDataSetChanged().
      */
-    public final void shouldShowFooters(boolean show) {
-        showFooters = show;
+    public final void showFooters(boolean showFooters) {
+        this.showFooters = showFooters;
         notifyDataSetChanged();
     }
 
@@ -139,21 +128,11 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
                         if (isHeader(position) || isFooter(position)) {
                             return layoutManager.getSpanCount();
                         }
-                        //非footer和header情况，计算item相对section位置信息
+                        //非footer和header情况
                         ItemCoord sectionAndPos = getRelativePosition(position);
-                        return getRowSpan(
-                                layoutManager.getSpanCount(),
-                                sectionAndPos.section(),
-                                sectionAndPos.relativePos(),
-                                position);
+                        return getRowSpan(sectionAndPos.section());
                     }
                 });
-    }
-
-
-    protected int getRowSpan(
-            int fullSpanSize, int section, int relativePosition, int absolutePosition) {
-        return 1;
     }
 
     /**
@@ -181,17 +160,22 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
 
     @Override
     public final int getItemCount() {
-        return positionManager.invalidate(this);
+        return positionManager.invalidate();
     }
 
     @Override
-    public final boolean showHeaderWhenEmptyItems() {
-        return showHeaderWhenEmptyItems;
+    public final boolean showHeadersWhenEmptyItems() {
+        return showHeadersWhenEmptyItems;
     }
 
     @Override
     public boolean showFooters() {
         return showFooters;
+    }
+
+    @Override
+    public int getFullSpanSize() {
+        return layoutManager.getSpanCount();
     }
 
     @Override
@@ -291,4 +275,21 @@ public abstract class SectionedRecyclerViewAdapter<VH extends SectionedViewHolde
             holder.itemView.setLayoutParams(layoutParams);
         }
     }
+
+    public abstract int getSectionCount();
+
+    public abstract int getItemCount(int sectionIndex);
+
+    public abstract int getStickyRowCount(int sectionIndex);
+
+    public abstract int getRowSpan(int sectionIndex);
+
+    public abstract boolean collapseOnStart(int sectionIndex);
+
+    public abstract void onBindHeaderViewHolder(VH holder, int section, boolean expanded);
+
+    public abstract void onBindFooterViewHolder(VH holder, int section);
+
+    public abstract void onBindViewHolder(
+            VH holder, int section, int relativePosition, int absolutePosition);
 }

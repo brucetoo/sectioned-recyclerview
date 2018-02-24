@@ -33,7 +33,7 @@ public class PositionManagerTest {
           }
 
           @Override
-          public boolean showHeaderWhenEmptyItems() {
+          public boolean showHeadersWhenEmptyItems() {
             return true;
           }
 

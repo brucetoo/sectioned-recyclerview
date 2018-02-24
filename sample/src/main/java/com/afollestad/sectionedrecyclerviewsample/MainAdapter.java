@@ -23,8 +23,8 @@ class MainAdapter extends SectionedRecyclerViewAdapter<MainAdapter.MainVH> {
     }
 
     @Override
-    public int getItemCount(int section) {
-        switch (section) {
+    public int getItemCount(int sectionIndex) {
+        switch (sectionIndex) {
             case 0:
                 return 4;
             case 1:
@@ -33,6 +33,33 @@ class MainAdapter extends SectionedRecyclerViewAdapter<MainAdapter.MainVH> {
                 return 10;
             default:
                 return 6;
+        }
+    }
+
+    @Override
+    public int getStickyRowCount(int sectionIndex) {
+        return 1;
+    }
+
+    @Override
+    public int getRowSpan(int sectionIndex) {
+        switch (sectionIndex) {
+            case 0:
+            case 2:
+                return 1;
+            default:
+                return 2;
+        }
+    }
+
+    @Override
+    public boolean collapseOnStart(int sectionIndex) {
+        switch (sectionIndex) {
+            case 0:
+            case 2:
+                return false;
+            default:
+                return true;
         }
     }
 

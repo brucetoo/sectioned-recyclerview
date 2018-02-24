@@ -15,29 +15,42 @@ class PositionManager implements SectionedViewHolder.PositionDelegate {
     private ItemProvider itemProvider;
     private boolean hasInvalidated;
 
+    public PositionManager(ItemProvider itemProvider) {
+        this.itemProvider = itemProvider;
+        for (int s = 0; s < itemProvider.getSectionCount(); s++) {
+            if (itemProvider.collapseOnStart(s)) {
+                collapsedSectionMap.put(s, true);
+            }
+        }
+    }
+
     boolean hasInvalidated() {
         return hasInvalidated;
     }
 
-    int invalidate(ItemProvider itemProvider) {
+    int invalidate() {
         this.hasInvalidated = true;
-        this.itemProvider = itemProvider;
         int count = 0;
         headerLocationMap.clear();
         footerLocationMap.clear();
         for (int s = 0; s < itemProvider.getSectionCount(); s++) {
+            int itemCount = itemProvider.getItemCount(s);
             //初始化的时候不会走此逻辑,在有section执行collapse后刷新整个列表时会触发此逻辑
             // (不会累加计算该section下的item个数)
             if (collapsedSectionMap.get(s) != null) {
                 //当前section位置被collapse操作过
                 headerLocationMap.put(count, s);
                 count += 1;//只累加header的个数
+                //当section所属的Item不为空时
+                if (itemCount > 0) {
+                    int rowCount = itemProvider.getStickyRowCount(s) * itemProvider.getFullSpanSize() / itemProvider.getRowSpan(s);
+                    count += Math.max(0, Math.min(rowCount, itemCount));
+                }
                 continue;
             }
 
             //初始化的时候执行此逻辑，统计每个section下所有item的个数
-            int itemCount = itemProvider.getItemCount(s);
-            if (itemProvider.showHeaderWhenEmptyItems() || (itemCount > 0)) {
+            if (itemProvider.showHeadersWhenEmptyItems() || itemCount > 0) {
                 headerLocationMap.put(count, s);
                 count += itemCount + 1;//加1的原因是起始位置从0开始算，表示整个列表item个数
                 if (itemProvider.showFooters()) {//计算footer的个数
